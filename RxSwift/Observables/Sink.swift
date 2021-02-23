@@ -6,8 +6,12 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
+// Xavier: IMO, SinkForward is a thread-safe observer, because they set type of
+//          disposed as ActiomicInt to avoid the observer is disposed in
+//          multiple threads.
 class Sink<Observer: ObserverType>: Disposable {
     fileprivate let observer: Observer
+    // Xavier: Cancelable is a protocol and conforms to Disposable
     fileprivate let cancel: Cancelable
     private let disposed = AtomicInt(0)
 
@@ -23,11 +27,15 @@ class Sink<Observer: ObserverType>: Disposable {
         self.cancel = cancel
     }
 
+    // Xavier: forwardOn(_:) does the following things
+    //  * check if was disposed, if does, do nothing
+    //  * do observer.on(event)
     final func forwardOn(_ event: Event<Observer.Element>) {
         #if DEBUG
             self.synchronizationTracker.register(synchronizationErrorMessage: .default)
             defer { self.synchronizationTracker.unregister() }
         #endif
+        // Xavier: if self.disposed == 1, then do nothing.
         if isFlagSet(self.disposed, 1) {
             return
         }
@@ -54,6 +62,7 @@ class Sink<Observer: ObserverType>: Disposable {
     }
 }
 
+// Xavier: Wrapping Sink to ObserverType
 final class SinkForward<Observer: ObserverType>: ObserverType {
     typealias Element = Observer.Element 
 

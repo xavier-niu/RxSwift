@@ -16,6 +16,9 @@ extension ObservableType where Element: RxAbstractInteger {
      - parameter scheduler: Scheduler to run the timer on.
      - returns: An observable sequence that produces a value after each period.
      */
+
+
+    
     public static func interval(_ period: RxTimeInterval, scheduler: SchedulerType)
         -> Observable<Element> {
         return Timer(
