@@ -16,6 +16,7 @@ public final class CompositeDisposable : DisposeBase, Cancelable {
         }
     }
 
+    // Xavier: SpinLock is a type alias for RecursiveLock
     private var lock = SpinLock()
     
     // state

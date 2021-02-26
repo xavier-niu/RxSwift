@@ -23,7 +23,7 @@ extension DispatchQueueConfiguration {
                 return
             }
 
-
+            // Xavier: action is called!
             cancel.setDisposable(action(state))
         }
 

@@ -17,9 +17,18 @@ final class AnyRecursiveScheduler<State> {
     
     typealias Action =  (State, AnyRecursiveScheduler<State>) -> Void
 
+    /**
+     Xavier:
+      RecursiveLock is a type alias of NSRecursiveLock.
+      What is recursive lock?
+       * The reentrant mutex may be locked multiple times by the same process/thread.
+       * A recursive lock tracks the number of times it has been locked and requires equally many unlock operations to
+        be performed before other threads may lock it.
+     */
     private let lock = RecursiveLock()
     
     // state
+    // Xavier: Create a group of disposables
     private let group = CompositeDisposable()
 
     private var scheduler: SchedulerType

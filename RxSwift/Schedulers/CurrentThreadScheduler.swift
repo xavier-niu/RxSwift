@@ -44,7 +44,10 @@ public class CurrentThreadScheduler : ImmediateSchedulerType {
     private static var isScheduleRequiredKey: pthread_key_t = { () -> pthread_key_t in
         let key = UnsafeMutablePointer<pthread_key_t>.allocate(capacity: 1)
         defer { key.deallocate() }
-                                                               
+
+        // Xavier:
+        // ref: https://pubs.opengroup.org/onlinepubs/009696799/functions/pthread_key_create.html
+        // Create a key, the value is managed by pre-thread.
         guard pthread_key_create(key, nil) == 0 else {
             rxFatalError("isScheduleRequired key creation failed")
         }
@@ -88,9 +91,11 @@ public class CurrentThreadScheduler : ImmediateSchedulerType {
     - returns: The disposable object used to cancel the scheduled action (best effort).
     */
     public func schedule<StateType>(_ state: StateType, action: @escaping (StateType) -> Disposable) -> Disposable {
+        // Xavier: dequeue all ScheduledItems and invoke them, if isScheduleRequired is true and queue is not empty
         if CurrentThreadScheduler.isScheduleRequired {
             CurrentThreadScheduler.isScheduleRequired = false
 
+            // Xavier: call the `action` closure
             let disposable = action(state)
 
             defer {
