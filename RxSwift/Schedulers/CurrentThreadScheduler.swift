@@ -117,6 +117,7 @@ public class CurrentThreadScheduler : ImmediateSchedulerType {
             return disposable
         }
 
+        // CurrentThreadScheduler.isScheduleRequired == false
         let existingQueue = CurrentThreadScheduler.queue
 
         let queue: RxMutableBox<Queue<ScheduledItemType>>

@@ -35,6 +35,8 @@ extension DispatchQueueConfiguration {
 
         let compositeDisposable = CompositeDisposable()
 
+        // create a repeating timer on a background thread using GCD
+        // ref: https://medium.com/over-engineering/a-background-repeating-timer-in-swift-412cecfd2ef9
         let timer = DispatchSource.makeTimerSource(queue: self.queue)
         timer.schedule(deadline: deadline, leeway: self.leeway)
 

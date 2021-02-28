@@ -6,6 +6,7 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
+// Xavier: ScheduledItem is the implementation of ScheduleItemType
 protocol ScheduledItemType
     : Cancelable
     , InvocableType {

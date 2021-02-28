@@ -24,7 +24,8 @@ struct ScheduledItem<T>
         self.action = action
         self.state = state
     }
-    
+
+    // perform `action(state)`
     func invoke() {
          self.disposable.setDisposable(self.action(self.state))
     }

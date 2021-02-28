@@ -7,7 +7,7 @@
 //
 
 // Xavier: IMO, SinkForward is a thread-safe observer, because they set type of
-//          disposed as ActiomicInt to avoid the observer is disposed in
+//          disposed as AtomicInt to avoid the observer is disposed in
 //          multiple threads.
 class Sink<Observer: ObserverType>: Disposable {
     fileprivate let observer: Observer

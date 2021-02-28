@@ -13,6 +13,8 @@ class Producer<Element>: Observable<Element> {
 
     override func subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Element == Element {
         if !CurrentThreadScheduler.isScheduleRequired {
+            // Xavier: DO NOT Schedule right now because
+
             // The returned disposable needs to release all references once it was disposed.
             let disposer = SinkDisposer()
             let sinkAndSubscription = self.run(observer, cancel: disposer)
